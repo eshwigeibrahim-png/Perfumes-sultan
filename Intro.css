@@ -1,0 +1,185 @@
+/* ============================================================
+   المقدمة السينمائية — ملف مستقل لا يغيّر أي تنسيق في الموقع
+   ============================================================ */
+
+/* قفل التمرير أثناء المقدمة فقط */
+html.intro-lock,
+html.intro-lock body { overflow: hidden; }
+
+/* إن كانت المقدمة قد عُرضت في هذه الجلسة، لا تظهر إطلاقاً */
+html.intro-skip #intro { display: none; }
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.intro.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .45s ease;
+}
+
+/* الخلفية السوداء طبقة مستقلة ليتم تلاشيها بدون إعادة رسم */
+.intro__bg {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  will-change: opacity;
+}
+
+/* إخفاء الطبقات بعد أن يغطيها الضباب كلياً (توفير للأداء) */
+.intro .is-gone { visibility: hidden; }
+
+/* إيقاف حركات بطاقات المنتجات خلف المقدمة إلى أن تنكشف */
+html.intro-hold .item *,
+html.intro-hold .item *::before,
+html.intro-hold .item *::after { animation-play-state: paused !important; }
+
+/* ---------- الإضاءة ---------- */
+.intro__glow {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 96vmin;
+  height: 96vmin;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(190, 212, 255, .30), rgba(190, 212, 255, .09) 48%, transparent 72%);
+  opacity: 0;
+  will-change: opacity;
+}
+.intro__beam {
+  position: absolute;
+  top: -5%;
+  left: 50%;
+  width: min(74vmin, 560px);
+  height: 108%;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, rgba(226, 237, 255, .26), rgba(226, 237, 255, .07) 55%, transparent 88%);
+  clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+  filter: blur(10px);
+  opacity: 0;
+  will-change: opacity;
+}
+
+/* ---------- الزجاجة (صورة حقيقية بثلاث طبقات) ---------- */
+.intro__stage {
+  position: relative;
+  width: min(88vw, 47vh, 410px);     /* النسبة 726:1068 تحدد الارتفاع */
+  aspect-ratio: 726 / 1068;
+  opacity: 0;
+  transform: translateY(1vh) scale(1.05);
+  will-change: opacity, transform;
+}
+.ig-layer, .ig-sweep {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+.ig-press { position: absolute; inset: 0; opacity: 0; will-change: transform; }
+.ig-nozzle { position: absolute; left: 50.14%; top: 17.7%; width: 2px; height: 2px; margin: -1px 0 0 -1px; }
+.ig-cap { transform-origin: 50% 24%; will-change: transform, opacity, filter; }
+
+/* انعكاس وبقعة ضوء على الأرضية */
+.ig-refl {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: 100%;
+  transform: scaleY(-1);
+  opacity: .5;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, .55), transparent 26%);
+          mask-image: linear-gradient(to top, rgba(0, 0, 0, .55), transparent 26%);
+}
+.ig-pool {
+  position: absolute;
+  left: -20%;
+  width: 140%;
+  bottom: -4%;
+  height: 9%;
+  background: radial-gradient(closest-side, rgba(200, 222, 255, .42), rgba(200, 222, 255, 0));
+  pointer-events: none;
+}
+.ig-floor {
+  position: absolute;
+  left: -30%;
+  width: 160%;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(220, 234, 255, .7), transparent);
+  pointer-events: none;
+}
+
+.intro__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 45%, transparent 42%, rgba(0, 0, 0, .7) 100%);
+}
+
+/* ---------- الضباب ---------- */
+.intro__haze {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 95% at 50% 42%, #fffaf0 0%, #fff6e6 55%, #fbefd9 100%);
+  opacity: 0;
+  will-change: opacity;
+}
+.intro__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* ---------- زر التخطي ---------- */
+.intro__skip {
+  position: absolute;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  inset-inline-start: 22px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .02em;
+  color: rgba(255, 255, 255, .82);
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .32);
+  border-radius: 100px;
+  padding: 8px 18px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .6s ease, background .2s ease;
+}
+.intro__skip.is-on { opacity: 1; }
+.intro__skip.is-off { opacity: 0; pointer-events: none; transition-duration: .3s; }
+.intro__skip:hover { background: rgba(255, 255, 255, .16); }
+.intro__skip:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* ---------- بديل تقليل الحركة: ظهور هادئ ثم اختفاء ---------- */
+.intro--reduced .intro__canvas,
+.intro--reduced .intro__beam,
+.intro--reduced .intro__haze { display: none; }
+.intro--reduced .intro__glow { opacity: .8; }
+.intro--reduced .intro__stage { transform: translateY(1vh); animation: ig-fade .9s ease .1s both; }
+.intro--reduced .ig-sweep { display: none; }
+.intro--reduced .intro__skip { opacity: 1; transition: none; }
+.intro--reduced.is-leaving { transition-duration: .7s; }
+@keyframes ig-fade { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 560px) {
+  .intro__skip { inset-inline-start: 16px; }
+}

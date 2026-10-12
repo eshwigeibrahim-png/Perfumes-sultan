@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<link rel="icon" href="images/favicon-bottle.png" type="image/x-icon" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kufam:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>السلطان للعطور — عطور تحكي قصتك</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Style.css" />
+
+  <!-- المقدمة الافتتاحية: تُعرض مرة واحدة لكل جلسة (أضف ?intro=1 للرابط لإعادة عرضها، و ?intro=0 لإخفائها) -->
+  <script>
+    (function () {
+      var c = document.documentElement.classList, q = location.search, seen = false;
+      try { seen = sessionStorage.getItem('introSeen') === '1'; } catch (e) { seen = true; }
+      if (/[?&]intro=0/.test(q) || (seen && !/[?&]intro=1/.test(q))) c.add('intro-skip');
+      else c.add('intro-lock');
+    })();
+  </script>
+  <link rel="stylesheet" href="Intro.css" />
+  <noscript><style>#intro { display: none !important; }</style></noscript>
+</head>
+<body>
+
+  <!-- ============ المقدمة السينمائية ============ -->
+  <div id="intro" class="intro" role="region" aria-label="مقدمة افتتاحية">
+    <div class="intro__bg"></div>
+    <div class="intro__glow"></div>
+    <div class="intro__beam"></div>
+    <div class="intro__stage" id="introStage">
+      <!-- انعكاس الزجاجة على الأرضية -->
+      <img class="ig-refl" src="images/intro-body.webp" alt="" aria-hidden="true" decoding="async" />
+      <div class="ig-pool"></div>
+      <!-- طبقات الزجاجة (صورة حقيقية مقسّمة): البخاخ تحت الجسم، والغطاء فوق الكل -->
+      <div class="ig-press" id="ig-press">
+        <img class="ig-layer" src="images/intro-spray.webp" alt="" decoding="async" fetchpriority="high" />
+        <span class="ig-nozzle" id="ig-nozzle"></span>
+      </div>
+      <img class="ig-layer" id="ig-body" src="images/intro-body.webp" alt="" decoding="async" fetchpriority="high" />
+      <canvas class="ig-sweep" id="igSweep" aria-hidden="true"></canvas>
+      <img class="ig-layer ig-cap" id="ig-cap" src="images/intro-cap.webp" alt="" decoding="async" fetchpriority="high" />
+      <div class="ig-floor"></div>
+    </div>
+    <div class="intro__vignette"></div>
+    <div class="intro__haze"></div>
+    <canvas class="intro__canvas" id="introCanvas" aria-hidden="true"></canvas>
+    <button class="intro__skip" id="introSkip" type="button">تخطي</button>
+  </div>
+
+  <!-- Top Nav -->
+  <header class="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__brand">السلطان</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1 class="hero__title">عطور تحكي قصتك،<br />بهدوء وأناقة</h1>
+    <p class="hero__sub">مجموعة مختارة بعناية من أرقى العطور الشرقية والغربية</p>
+    <a href="#gallery" class="btn btn--primary">تسوّق الآن</a>
+  </section>
+
+  <!-- Filter tabs -->
+  <nav class="tabs" id="tabs" aria-label="تصنيفات العطور">
+    <button class="tab tab--active" data-filter="all">الكل</button>
+    <button class="tab" data-filter="رجالي">رجالي</button>
+    <button class="tab" data-filter="نسائي">نسائي</button>
+    <button class="tab" data-filter="للجنسين">للجنسين</button>
+    <button class="tab" data-filter="عود">عود</button>
+    <button class="tab" data-filter="sale">عروض</button>
+  </nav>
+
+  <!-- Grid -->
+  <main class="container" id="gallery">
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 السلطان للعطور — جميع الحقوق محفوظة</p>
+    <a href="#" data-wa class="btn btn--ghost" target="_blank" rel="noopener">تواصل معنا</a>
+  </footer>
+
+  <!-- Chat bubble -->
+  <a href="#" data-wa class="chat" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.6A8 8 0 1 1 21 12z"/></svg>
+  </a>
+
+  <script src="products.js"></script>
+  <script src="Card.js"></script>
+  <script src="Script.js"></script>
+  <script src="Intro.js"></script>
+</body>
+</html>
